@@ -39,9 +39,9 @@ function Player:update(dt, tilemap, others)
     self.r = self.dir:angleTo(getMouseVector())
     self.vel = (self.vel + (self.acc * dt)) * clamp(DRAG * dt, 0, 1)
 
-    --if tilemap:collides_with(self.loc) then
-    --self.vel = Vector.new(0, 0)
-    --end
+    if tilemap:collidesWith(self.loc) then
+        self.vel = Vector.new(0, 0)
+    end
 
     self.loc = self.loc + self.vel
 end

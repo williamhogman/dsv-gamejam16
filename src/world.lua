@@ -20,7 +20,7 @@ end
 local World = Class{
     init = function(self, tilemap_data)
         self.tilemap = TileMap(tilemap_data)
-        self.player = Player(Vector.new(100, 100))
+        self.player = Player(Vector.new(64, 64))
         self.objects = {self.player}
     end,
 }
@@ -47,7 +47,7 @@ function World:update(dt)
     end
 
     for k, v in pairs(self.objects) do
-        v:update(dt, tilemap)
+        v:update(dt, self.tilemap)
     end
 end
 

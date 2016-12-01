@@ -13,8 +13,8 @@ function tilemap:init(data, resources)
     -- collidable tiles map
     self.collidable_tiles = {}
     for i, e in ipairs(tileset.tiles) do
-        if e.collidable then
-            self.collidable_tiles[e.id] = true
+        if e.properties and e.properties.collidable then
+            self.collidable_tiles[e.id + 1] = true
         end
     end
 
@@ -49,17 +49,15 @@ end
 
 function tilemap:collidesWith(pos)
 
-    local tile_index = self:worldCoordToTiles(pos.x, pos.y)
-    return self.collidable_tiles[tile_type]
+    local tile_index = self:worldCoordToTile(pos.x, pos.y)
+    return self.collidable_tiles[tile_index]
 
 end
 
 function tilemap:worldCoordToTile(x, y)
 
-    local x = (i % tile_map.width) * tile_map.tile_width
-    local y = math.ceil(i / tile_map.height) * tile_map.tile_height
-    local i = (x / tile_map.tile_width) + (y / tile_map.tile_height)
-
+    local tile_map = self
+    local i = (math.floor(y / tile_map.tile_height) - 1) * tile_map.width + math.floor(x / tile_map.tile_width)
     return self.tiles[i]
 
 end
