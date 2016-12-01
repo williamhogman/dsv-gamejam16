@@ -67,9 +67,9 @@ end
 
 function setup_game()
    engine = Engine()
+   engine:register(TileMap(tilemap_data))
    engine:register(Player(Vector.new(100, 100)))
    engine:register(DebugOverlay())
-   engine:register(TileMap(tilemap_data))
 end
 
 function draw_map()

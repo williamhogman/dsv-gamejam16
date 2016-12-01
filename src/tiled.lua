@@ -74,11 +74,13 @@ function tilemap:draw()
 
         -- this is not even
         local x = (i % tile_map.width) * tile_map.tile_width
-        local y = (i / tile_map.height) * tile_map.tile_height
+        local y = math.ceil((i / tile_map.height) * tile_map.tile_height)
+
+        print(y)
 
         local tile = self.tiles[i]
         if self.quads[tile] then
-            lg.draw(self.texture, self.quads[tile], self.texture:getDimensions())
+            lg.draw(self.texture, self.quads[tile], x, y, 0, 1, 1)
         end
 
     end
