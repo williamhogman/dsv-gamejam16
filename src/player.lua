@@ -2,12 +2,8 @@
 local lg = love.graphics
 
 local PLAYER_SIZE = 32
-<<<<<<< HEAD
-local MAX_SPEED = 80000000
 local TURN_SPEED = 25
-=======
 local SPEED = 40
->>>>>>> a74d407b17ca8d51e29a138d835e97e9168da4c2
 local OFFSET = Vector(PLAYER_SIZE / 2, PLAYER_SIZE / 2)
 local DRAG = 50
 
@@ -28,7 +24,7 @@ local function getMouseVector()
 end
 
 function Player:setMovement(vec)
-   self.acc = vec * 40
+   self.acc = vec * SPEED
 end
 
 function Player:update(dt)
