@@ -26,12 +26,10 @@ function Player:setMovement(vec)
 end
 
 function Player:update(dt)
-
    local dir = (self.loc + OFFSET) - getMouseVector()
    self.r = dir:angleTo(getMouseVector())
    self.vel = (self.vel + (self.acc * dt)) * clamp(DRAG * dt, 0, 1)
    self.loc = self.loc + self.vel
-
 end
 
 function Player:draw(camera)
