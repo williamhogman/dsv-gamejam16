@@ -1,9 +1,15 @@
+-- shorthands
+local lg = love.graphics
+
 local tilemap = Class {}
 
-function tilemap:init(data)
+function tilemap:init(data, resources)
 
 	-- only tileset we care about
 	local tileset = data.tilesets[1]
+
+	-- texture thing
+	self.texture = nil
 
 	-- get image width/height for texture
 	self.texture_width = tileset.imagewidth
@@ -26,29 +32,54 @@ function tilemap:init(data)
 	-- tile data, flat table of ids
 	self.tiles = data
 
+	-- tile resources
+	self.resources = resources
+
+	-- tile quads
+	self.quads = self:loadTileData(tileset.tilecount)
+
 end
 
-function tilemap:update()
+function tilemap:loadTileData(resourceCount)
+
+	local quads = {}
+
+	local x, y = 0, 0
+	for i=1, resourceCount do
+
+		x = x + self.margin
+		y = y + self.margin
+
+		quads[#quads+1] = lg.newQuad(x, y, self.tile_width, self.tile_height, self.texture_width, self.texture_height)
+
+		x = x + self.tile_width
+		y = y + self.tile_height
+
+	end
+
+	return quads
+
+end
+
+function tilemap:update(dt)
+
+end
+
+function tilemap:draw()
 
 	local tile_map = self
+	local tile_resources = self.resources
+
 	for i=1, #self.tiles do
 
 		-- this is not even
 		local x = (i % tile_map.width) * tile_map.tile_width
 		local y = (i / tile_map.height) * tile_map.tile_height
 
-		local res = tile_resources[tile_map.data[i]]
-
-		if res then
-			-- still awful
-			lg.draw(res, x, y)
-		end
+		local tile = self.tiles[i]
+		lg.draw(self.texture, self.quads[tile], self.texture:getDimensions())
 
 	end
-
-end
-
-function tilemap:draw()
 
 end
 
