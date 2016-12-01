@@ -1,44 +1,48 @@
-local tilemap = {}
+local tilemap = Class {}
 
-function tilemap:new(data)
-
-	local new_obj = {}
+function tilemap:init(data)
 
 	-- only tileset we care about
 	local tileset = data.tilesets[1]
 
 	-- get image width/height for texture
-	new_obj.texture_width = tileset.imagewidth
-	new_obj.texture_height = tileset.imageheight
+	self.texture_width = tileset.imagewidth
+	self.texture_height = tileset.imageheight
 
 	-- height/width of individual tiles
-	new_obj.tile_width = tileset.tilewidth
-	new_obj.tile_height = tileset.tileheight
+	self.tile_width = tileset.tilewidth
+	self.tile_height = tileset.tileheight
 
 	-- pixel margins between inviduual tiles to prevent glitches
-	new_obj.margin = tileset.margin
+	self.margin = tileset.margin
 
 	-- handle only first layer
 	local layer = data.layers[1]
 
 	-- width/height in tiles of the actual map
-	new_obj.width = layer.width
-	new_obj.height = layer.height
+	self.width = layer.width
+	self.height = layer.height
 
 	-- tile data, flat table of ids
-	new_obj.data = data
-
-	-- prototype shit
-	setmetatable(new_obj, self)
-	self.__index = self
-
-	return new_obj
+	self.tiles = data
 
 end
 
 function tilemap:update()
 
-	for i=1, #tilemap do
+	local tile_map = self
+	for i=1, #self.tiles do
+
+		-- this is not even
+		local x = (i % tile_map.width) * tile_map.tile_width
+		local y = (i / tile_map.height) * tile_map.tile_height
+
+		local res = tile_resources[tile_map.data[i]]
+
+		if res then
+			-- still awful
+			lg.draw(res, x, y)
+		end
 
 	end
 
