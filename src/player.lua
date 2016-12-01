@@ -2,7 +2,7 @@
 local lg = love.graphics
 
 local PLAYER_SIZE = 32
-local MAX_SPEED = 80000000
+local SPEED = 40
 local OFFSET = Vector(PLAYER_SIZE / 2, PLAYER_SIZE / 2)
 local DRAG = 50
 
@@ -22,15 +22,14 @@ local function getMouseVector()
 end
 
 function Player:setMovement(vec)
-   self.acc = vec * 50
+   self.acc = vec * 40
 end
 
 function Player:update(dt)
 
    local dir = (self.loc + OFFSET) - getMouseVector()
    self.r = dir:angleTo(getMouseVector())
-
-   self.vel = (self.vel + (self.acc * dt)):trimmed(MAX_SPEED) * clamp(DRAG * dt, 0, 1)
+   self.vel = (self.vel + (self.acc * dt)) * clamp(DRAG * dt, 0, 1)
    self.loc = self.loc + self.vel
 
 end

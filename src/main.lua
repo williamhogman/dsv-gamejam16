@@ -112,7 +112,7 @@ DIRECTIONS = {w = Vector.new(0, -1), s = Vector.new(0, 1), a = Vector.new(-1, 0)
 
 function calcmovementdirection()
    local sum = Vector.new(0, 0)
-   for k,v in ipairs(DIRECTIONS) do
+   for k,v in pairs(DIRECTIONS) do
       if lk.isDown(k) then
          sum = sum + v
       end
