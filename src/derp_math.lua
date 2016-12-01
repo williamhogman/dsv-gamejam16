@@ -9,10 +9,9 @@ end
 
 -- circle intersection because i am hella lazy
 function are_colliding(thing_one, thing_two)
-
     if thing_one.radius and thing_two.radius then
-        return distance(thing_one.pos, thing_two.pos) < (thing_one.radius + thing_two.radius)
-    else 
+        return distance(thing_one.loc, thing_two.loc) < (thing_one.radius + thing_two.radius)
+    else
         return false
     end
 

@@ -14,7 +14,7 @@ function tilemap:init(data, resources)
     self.collidable_tiles = {}
     for i, e in ipairs(tileset.tiles) do
         if e.collidable then
-             self.collidable_tiles[e.id] = true
+            self.collidable_tiles[e.id] = true
         end
     end
 

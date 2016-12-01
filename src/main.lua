@@ -35,7 +35,7 @@ function love.load()
 end
 
 function love.update(dt)
-   engine:update(dt)
+    engine:update(dt)
 end
 
 function love.draw()
