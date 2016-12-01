@@ -1,3 +1,5 @@
+local OFFSET = Vector.new(16, 16)
+
 local Bot = Class{
     init = function(self, loc, target)
         local tex = love.graphics.newImage("resources/goblin.png")
@@ -25,19 +27,36 @@ function toaccelinplace(v)
 end
 
 function Bot:update(dt, tilemap, others)
-    local accel = toaccelinplace(self.target.loc - self.loc) * 10
+    local accel = toaccelinplace(self.target.loc - (self.loc + OFFSET)) * 10
 
-    local leftfeeler = self.loc + accel:rotated(1/4 * math.pi)
-    local rightfeeler = self.loc + accel:rotated(-1/4 * math.pi)
+    local leftfeeler = self.loc + OFFSET + accel:rotated(1/4 * math.pi) * 2
+    local rightfeeler = self.loc + OFFSET + accel:rotated(-1/4 * math.pi) * 2
+    local midfeeler = self.loc + OFFSET + accel * 2
 
     if tilemap:collidesWith(leftfeeler) then
-        self.acc = accel:rotated(1/8 * math.pi)
+        self.acc = accel:rotated(-1/4 * math.pi)
     elseif tilemap:collidesWith(rightfeeler) then
-        self.acc = accel:rotated(-1/8 * math.pi)
+        self.acc = accel:rotated(1/4 * math.pi)
+    elseif tilemap:collidesWith(midfeeler) then
+        self.acc = -accel
     else
         self.acc = accel
     end
     Creature.update(self, dt, tilemap, others)
+end
+
+function Bot:draw(camera)
+    local accel = toaccelinplace(self.target.loc - self.loc) * 10
+    local leftfeeler = self.loc + OFFSET + accel:rotated(1/4 * math.pi) * 2
+    local rightfeeler = self.loc + OFFSET + accel:rotated(-1/4 * math.pi) * 2
+
+    love.graphics.circle("fill", leftfeeler.x, leftfeeler.y, 10)
+    love.graphics.circle("fill", rightfeeler.x, rightfeeler.y, 10)
+
+    local feck = self.loc + OFFSET
+    local comb = feck + self.acc
+    love.graphics.line(feck.x, feck.y, comb.x + 25, comb.y + 25)
+    Creature.draw(self, camera)
 end
 
 function Bot:getFacingPoint()
