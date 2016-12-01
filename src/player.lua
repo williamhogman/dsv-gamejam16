@@ -36,14 +36,20 @@ function Player:update(dt, tilemap, others)
     local ca = clamp(as, -TURN_SPEED * dt, TURN_SPEED * dt)
     self.dir:rotateInplace(ca)
 
-    self.r = self.dir:angleTo(getMouseVector())
+    self.r = self.dir:angleTo()
     self.vel = (self.vel + (self.acc * dt)) * clamp(DRAG * dt, 0, 1)
 
-    if tilemap:collidesWith(self.loc) then
-        self.vel = Vector.new(0, 0)
-    end
+    local nextLoc = self.loc + self.vel
 
-    self.loc = self.loc + self.vel
+    local corners = {-1/4, 1/4, 3/4, -3/4}
+    local didCollide = false
+    for _k, v in pairs(corners) do
+        local corner = nextLoc + OFFSET + ((self.dir:rotated(v * math.pi)) * PLAYER_SIZE)
+        didCollide = didCollide or tilemap:collidesWith(corner)
+    end
+    if not didCollide then
+        self.loc = nextLoc
+    end
 end
 
 function Player:draw(camera)
@@ -53,11 +59,17 @@ function Player:draw(camera)
         self.tex,
         -- draw positions
         self.loc.x + PLAYER_SIZE / 2, self.loc.y + PLAYER_SIZE / 2,
-        self.r - math.pi / 4, 1, 1,
+        self.r, 1, 1,
         -- origin offsets
         PLAYER_SIZE/2,
         PLAYER_SIZE/2)
 
+    local corners = {0, -1/4, 1/4, 3/4, -3/4}
+    local didCollide = false
+    for _k, v in pairs(corners) do
+        local corner = self.loc + OFFSET + ((self.dir:rotated(v * math.pi)) * PLAYER_SIZE)
+        love.graphics.circle("fill", corner.x, corner.y, 5)
+    end
 end
 
 return Player
