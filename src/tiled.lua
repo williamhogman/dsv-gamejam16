@@ -82,7 +82,7 @@ function tilemap:draw()
 
         -- this is not even
         local x = (i % tile_map.width) * tile_map.tile_width
-        local y = math.ceil((i / tile_map.height) * tile_map.tile_height)
+        local y = math.ceil(i / tile_map.height) * tile_map.tile_height
 
         local tile = self.tiles[i]
         if self.quads[tile] then
