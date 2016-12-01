@@ -1,4 +1,3 @@
--- shorthands
 local lg = love.graphics
 
 local tilemap = Class {}
@@ -53,15 +52,15 @@ function tilemap:loadTileData(resourceCount)
     local quads = {}
     local x, y = 0, 0
 
-    for i=1, resourceCount do
+    x = x + self.margin
+    y = y + self.margin
 
-        x = x + self.margin
-        y = y + self.margin
+    for i=1, resourceCount do
 
         quads[#quads+1] = lg.newQuad(x, y, self.tile_width, self.tile_height, self.texture_width, self.texture_height)
 
         x = x + self.tile_width
-        y = y + self.tile_height
+        -- y = y + self.tile_height
 
     end
 

@@ -121,6 +121,9 @@ function calcmovementdirection()
 end
 
 function love.keypressed(key, scancode, isrepeat)
+    if scancode == "escape" then
+        le.quit()
+    end
    player:setMovement(calcmovementdirection())
 end
 
