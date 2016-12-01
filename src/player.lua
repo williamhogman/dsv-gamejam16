@@ -28,7 +28,6 @@ function Player:setMovement(vec)
 end
 
 function Player:update(dt)
-
    local new_dir = (self.loc + OFFSET) - getMouseVector()
    local cpd = new_dir:normalized():cross(self.dir)
 
@@ -39,7 +38,6 @@ function Player:update(dt)
    self.r = self.dir:angleTo(getMouseVector())
    self.vel = (self.vel + (self.acc * dt)) * clamp(DRAG * dt, 0, 1)
    self.loc = self.loc + self.vel
-
 end
 
 function Player:draw(camera)
