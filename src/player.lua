@@ -12,12 +12,13 @@ local Player = Class{
 }
 
 local function getMouseVector()
-    local x, y = love.mouse.getPosition()
-    return Vector.new(x, y)
+   local x, y = love.mouse.getPosition()
+   return Vector.new(x, y)
 end
 
-function Player:update()
-    self.r = self.loc:angleTo(getMouseVector())
+
+function Player:update(dt)
+   self.r = self.loc:angleTo(getMouseVector())
 end
 
 function Player:draw()

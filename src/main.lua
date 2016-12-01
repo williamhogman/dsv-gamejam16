@@ -41,7 +41,31 @@ local camera = Camera(0, 0, 1)
 -- Game functions here! -------
 -------------------------------
 
+local Engine = Class{
+   init = function(self)
+      self.things = {}
+   end,
+}
+
+function Engine:draw()
+   for i,v in ipairs(self.things) do
+      v:draw()
+   end
+end
+
+function Engine:update(dt)
+   for i,v in ipairs(self.things) do
+      v:update(dt)
+   end
+end
+
+function Engine:register(part)
+   table.insert(self.things, part)
+end
+
+
 function load_resources()
+<<<<<<< 6ebaafd2cd2ae4c4928b2ad32d7ad52f7818246f
     player = Player(Vector.new(100, 100))
 end
 
@@ -49,6 +73,16 @@ function setup_game()
     -- load images and such
     load_resources()
 
+=======
+
+end
+
+function setup_game()
+   engine = Engine()
+   engine:register(Player(Vector.new(100, 100)))
+   -- load images and such
+   load_resources()
+>>>>>>> use engine system for rendering player
 end
 
 function draw_debug()
@@ -77,7 +111,7 @@ end
 
 -- DRAW ALL THE THINGS
 function draw_game()
-    player:draw()
+   engine:draw()
 end
 
 function draw_ui()
@@ -90,33 +124,25 @@ end
 -------------------------------
 
 function love.load()
-
-    -- load resources
-    setup_game()
-
+   -- load resources
+   setup_game()
 end
 
 function love.update(dt)
-    player:update()
+   engine:update(dt)
 end
 
 function love.draw()
-
-    -- camera:attach()
-    draw_game()
-    -- camera:detach()
-
-    draw_ui()
-    draw_debug()
-
+   -- camera:attach()
+   draw_game()
+   -- camera:detach()
+   draw_ui()
 end
 
 function love.keypressed(key, scancode, isrepeat)
-
     if scancode == "escape" then
         le.quit()
     end
-
 end
 
 function love.mousepressed(x, y, button, istouch)
