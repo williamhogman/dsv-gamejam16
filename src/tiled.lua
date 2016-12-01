@@ -47,6 +47,23 @@ function tilemap:init(data, resources)
 
 end
 
+function tilemap:collidesWith(pos)
+
+    local tile_index = self:worldCoordToTiles(pos.x, pos.y)
+    return self.collidable_tiles[tile_type]
+
+end
+
+function tilemap:worldCoordToTile(x, y)
+
+    local x = (i % tile_map.width) * tile_map.tile_width
+    local y = math.ceil(i / tile_map.height) * tile_map.tile_height
+    local i = (x / tile_map.tile_width) + (y / tile_map.tile_height)
+
+    return self.tiles[i]
+
+end
+
 function tilemap:loadTileData(resourceCount)
 
     local quads = {}
