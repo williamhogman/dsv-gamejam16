@@ -3,6 +3,7 @@ local lg = love.graphics
 
 local PLAYER_SIZE = 32
 local MAX_SPEED = 80000000
+local TURN_SPEED = 25
 local OFFSET = Vector(PLAYER_SIZE / 2, PLAYER_SIZE / 2)
 local DRAG = 50
 
@@ -11,6 +12,7 @@ local Player = Class{
        self.loc = loc
        self.vel = Vector.new(0, 0)
        self.acc = Vector.new(0, 0)
+       self.dir = Vector.new(0, 1)
        self.r = 0
        self.tex = love.graphics.newImage("resources/player.png")
     end,
@@ -28,15 +30,21 @@ end
 
 function Player:update(dt)
 
-   local dir = (self.loc + OFFSET) - getMouseVector()
-   self.r = dir:angleTo(getMouseVector())
+   local new_dir = (self.loc + OFFSET) - getMouseVector()
+   local cpd = new_dir:normalized():cross(self.dir)
 
+   local as = math.asin(cpd)
+   local ca = clamp(as, -TURN_SPEED * dt, TURN_SPEED * dt)
+   self.dir:rotateInplace(ca)
+
+   self.r = self.dir:angleTo(getMouseVector())
    self.vel = (self.vel + (self.acc * dt)):trimmed(MAX_SPEED) * clamp(DRAG * dt, 0, 1)
    self.loc = self.loc + self.vel
 
 end
 
 function Player:draw(camera)
+
     lg.draw(
         -- tex
         self.tex,
@@ -46,6 +54,7 @@ function Player:draw(camera)
         -- origin offsets
         PLAYER_SIZE/2,
         PLAYER_SIZE/2)
+
 end
 
 return Player
