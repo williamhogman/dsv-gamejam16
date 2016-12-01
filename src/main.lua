@@ -23,7 +23,7 @@ local le = love.event
 local li = love.image
 
 -------------------------------
--- Resources ---------
+-- Resources ------------------
 -------------------------------
 
 
