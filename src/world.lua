@@ -21,7 +21,7 @@ local World = Class{
     init = function(self, tilemap_data)
         self.tilemap = TileMap(tilemap_data)
         self.player = Player(Vector.new(64, 64))
-        local mrbot = Bot(Vector.new(128, 128), self.player)
+        local mrbot = Bot(Vector.new(256, 128), self.player)
         self.objects = {self.player, mrbot}
     end,
 }
