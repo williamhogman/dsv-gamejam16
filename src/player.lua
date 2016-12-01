@@ -28,27 +28,42 @@ function Player:setMovement(vec)
     self.acc = vec * SPEED
 end
 
+local function testColl(nextLoc, dir, tilemap)
+    local corners = {-1/4, 1/4, 3/4, -3/4}
+    for _k, v in pairs(corners) do
+        local corner = nextLoc + OFFSET + ((dir:rotated(v * math.pi)) * (PLAYER_SIZE * 0.75))
+        if tilemap:collidesWith(corner) then
+            return true
+        end
+    end
+    return false
+end
+
 function Player:update(dt, tilemap, others)
     local new_dir = (self.loc + OFFSET) - getMouseVector()
     local cpd = new_dir:normalized():cross(self.dir)
 
     local as = math.asin(cpd)
     local ca = clamp(as, -TURN_SPEED * dt, TURN_SPEED * dt)
-    self.dir:rotateInplace(ca)
+    local nextDir = self.dir:rotated(ca)
 
-    self.r = self.dir:angleTo()
+
     self.vel = (self.vel + (self.acc * dt)) * clamp(DRAG * dt, 0, 1)
 
     local nextLoc = self.loc + self.vel
 
-    local corners = {-1/4, 1/4, 3/4, -3/4}
-    local didCollide = false
-    for _k, v in pairs(corners) do
-        local corner = nextLoc + OFFSET + ((self.dir:rotated(v * math.pi)) * PLAYER_SIZE)
-        didCollide = didCollide or tilemap:collidesWith(corner)
-    end
-    if not didCollide then
+    if not testColl(nextLoc, nextDir, tilemap) then
         self.loc = nextLoc
+        self.dir = nextDir
+        self.r = self.dir:angleTo()
+    else
+        local xcand = self.loc + Vector.new(self.vel.x, 0)
+        local ycand = self.loc + Vector.new(0, self.vel.y)
+        if not testColl(xcand, self.dir, tilemap) then
+            self.loc = xcand
+        elseif not testColl(ycand, self.dir, tilemap) then
+            self.loc = ycand
+        end
     end
 end
 
@@ -63,13 +78,6 @@ function Player:draw(camera)
         -- origin offsets
         PLAYER_SIZE/2,
         PLAYER_SIZE/2)
-
-    local corners = {0, -1/4, 1/4, 3/4, -3/4}
-    local didCollide = false
-    for _k, v in pairs(corners) do
-        local corner = self.loc + OFFSET + ((self.dir:rotated(v * math.pi)) * PLAYER_SIZE)
-        love.graphics.circle("fill", corner.x, corner.y, 5)
-    end
 end
 
 return Player
