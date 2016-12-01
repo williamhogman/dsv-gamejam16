@@ -2,12 +2,16 @@
 local lg = love.graphics
 
 local PLAYER_SIZE = 32
+local MAX_SPEED = 8
+local DRAG = 1000
 
 local Player = Class{
     init = function(self, loc)
-        self.loc = loc
-        self.r = 0
-        self.tex = love.graphics.newImage("resources/player.png")
+       self.loc = loc
+       self.vel = Vector.new(0, 0)
+       self.acc = Vector.new(0, 0)
+       self.r = 0
+       self.tex = love.graphics.newImage("resources/player.png")
     end,
 }
 
@@ -16,9 +20,15 @@ local function getMouseVector()
    return Vector.new(x, y)
 end
 
+function Player:setMovement(x, y)
+   self.acc.x = x
+   self.acc.y = y
+end
 
 function Player:update(dt)
    self.r = self.loc:angleTo(getMouseVector())
+   self.vel = (self.vel + (self.acc * dt)):trimmed(MAX_SPEED)
+   self.loc = self.loc + (self.vel * clamp(DRAG * dt, 0, 1))
 end
 
 function Player:draw(camera)

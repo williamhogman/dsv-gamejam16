@@ -8,6 +8,8 @@ require("cupid.debug")
 -- Includes -------------------
 -------------------------------
 
+require "derp_math"
+
 -- these are global, careful?
 require "defines"
 
@@ -68,7 +70,8 @@ end
 function setup_game()
    engine = Engine()
    engine:register(TileMap(tilemap_data))
-   engine:register(Player(Vector.new(100, 100)))
+   player = Player(Vector.new(100, 100))
+   engine:register(player)
    engine:register(DebugOverlay())
 end
 
@@ -107,8 +110,17 @@ end
 
 function love.keypressed(key, scancode, isrepeat)
     if scancode == "escape" then
-        le.quit()
+       le.quit()
+    elseif scancode == "w" then
+       player:setMovement(0, -1)
+    elseif scancode == "s" then
+       player:setMovement(0, 1)
+    elseif scancode == "a" then
+       player:setMovement(-1, 0)
+    elseif scancode == "d" then
+       player:setMovement(1, 0)
     end
+
 end
 
 function love.mousepressed(x, y, button, istouch)
