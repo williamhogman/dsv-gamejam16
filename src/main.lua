@@ -108,25 +108,24 @@ function love.draw()
    draw_ui()
 end
 
+DIRECTIONS = {w = Vector.new(0, -1), s = Vector.new(0, 1), a = Vector.new(-1, 0), d = Vector.new(1, 0)}
+
+function calcmovementdirection()
+   local sum = Vector.new(0, 0)
+   for k,v in ipairs(DIRECTIONS) do
+      if lk.isDown(k) then
+         sum = sum + v
+      end
+   end
+   return sum
+end
+
 function love.keypressed(key, scancode, isrepeat)
-    if scancode == "escape" then
-       le.quit()
-    elseif scancode == "w" then
-       player:setMovement(0, -1)
-    elseif scancode == "s" then
-       player:setMovement(0, 1)
-    elseif scancode == "a" then
-       player:setMovement(-1, 0)
-    elseif scancode == "d" then
-       player:setMovement(1, 0)
-    end
+   player:setMovement(calcmovementdirection())
 end
 
 function love.keyreleased(key, scancode)
-   if lk.isDown("w") or lk.isDown("a") or lk.isDown("d") or lk.isDown("s") then
-      return
-   end
-   player:setMovement(0, 0)
+   player:setMovement(calcmovementdirection())
 end
 
 function love.mousepressed(x, y, button, istouch)
