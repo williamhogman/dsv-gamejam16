@@ -22,8 +22,8 @@ local function getMouseVector()
 end
 
 function Player:setMovement(x, y)
-   self.acc.x = x * 10
-   self.acc.y = y * 10
+   self.acc.x = x * 100
+   self.acc.y = y * 100
 end
 
 function Player:update(dt)
