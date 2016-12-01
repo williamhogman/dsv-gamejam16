@@ -11,6 +11,14 @@ function tilemap:init(data, resources)
     -- texture load
     self.texture = lg.newImage("resources/tiles.png")
 
+    -- collidable tiles map
+    self.collidable_tiles = {}
+    for i, e in ipairs(tileset.tiles) do
+        if e.collidable then
+             self.collidable_tiles[e.id] = true
+        end
+    end
+
     -- get image width/height for texture
     self.texture_width = tileset.imagewidth
     self.texture_height = tileset.imageheight

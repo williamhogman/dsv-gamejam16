@@ -28,7 +28,14 @@ return {
       properties = {},
       terrains = {},
       tilecount = 2,
-      tiles = {}
+      tiles = {
+        {
+          id = 1,
+          properties = {
+            ["collidable"] = true
+          }
+        }
+      }
     }
   },
   layers = {
