@@ -21,7 +21,7 @@ function Player:update(dt)
    self.r = self.loc:angleTo(getMouseVector())
 end
 
-function Player:draw()
+function Player:draw(camera)
     lg.draw(self.tex, self.loc.x + 16, self.loc.y + 16, self.r)
 end
 
