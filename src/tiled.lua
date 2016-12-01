@@ -8,8 +8,8 @@ function tilemap:init(data, resources)
     -- only tileset we care about
     local tileset = data.tilesets[1]
 
-    -- texture thing
-    self.texture = nil
+    -- texture load
+    self.texture = lg.newImage("resources/tiles.png")
 
     -- get image width/height for texture
     self.texture_width = tileset.imagewidth
@@ -30,7 +30,7 @@ function tilemap:init(data, resources)
     self.height = layer.height
 
     -- tile data, flat table of ids
-    self.tiles = data
+    self.tiles = layer.data
 
     -- tile resources
     self.resources = resources
@@ -77,7 +77,9 @@ function tilemap:draw()
         local y = (i / tile_map.height) * tile_map.tile_height
 
         local tile = self.tiles[i]
-        lg.draw(self.texture, self.quads[tile], self.texture:getDimensions())
+        if self.quads[tile] then
+            lg.draw(self.texture, self.quads[tile], self.texture:getDimensions())
+        end
 
     end
 
