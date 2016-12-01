@@ -37,6 +37,6 @@ function World:update(dt)
 end
 
 --function World:registerObject(obj)
-    --table.insert(self.things, part)
+--table.insert(self.things, part)
 --end
 return World

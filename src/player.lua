@@ -9,35 +9,35 @@ local DRAG = 50
 
 local Player = Class{
     init = function(self, loc)
-       self.loc = loc
-       self.vel = Vector.new(0, 0)
-       self.acc = Vector.new(0, 0)
-       self.dir = Vector.new(0, 1)
-       self.r = 0
-       self.tex = love.graphics.newImage("resources/player.png")
+        self.loc = loc
+        self.vel = Vector.new(0, 0)
+        self.acc = Vector.new(0, 0)
+        self.dir = Vector.new(0, 1)
+        self.r = 0
+        self.tex = love.graphics.newImage("resources/player.png")
     end,
 }
 
 local function getMouseVector()
-   local x, y = love.mouse.getPosition()
-   return Vector.new(x, y)
+    local x, y = love.mouse.getPosition()
+    return Vector.new(x, y)
 end
 
 function Player:setMovement(vec)
-   self.acc = vec * SPEED
+    self.acc = vec * SPEED
 end
 
 function Player:update(dt)
-   local new_dir = (self.loc + OFFSET) - getMouseVector()
-   local cpd = new_dir:normalized():cross(self.dir)
+    local new_dir = (self.loc + OFFSET) - getMouseVector()
+    local cpd = new_dir:normalized():cross(self.dir)
 
-   local as = math.asin(cpd)
-   local ca = clamp(as, -TURN_SPEED * dt, TURN_SPEED * dt)
-   self.dir:rotateInplace(ca)
+    local as = math.asin(cpd)
+    local ca = clamp(as, -TURN_SPEED * dt, TURN_SPEED * dt)
+    self.dir:rotateInplace(ca)
 
-   self.r = self.dir:angleTo(getMouseVector())
-   self.vel = (self.vel + (self.acc * dt)) * clamp(DRAG * dt, 0, 1)
-   self.loc = self.loc + self.vel
+    self.r = self.dir:angleTo(getMouseVector())
+    self.vel = (self.vel + (self.acc * dt)) * clamp(DRAG * dt, 0, 1)
+    self.loc = self.loc + self.vel
 end
 
 function Player:draw(camera)
