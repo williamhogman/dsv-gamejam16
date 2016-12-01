@@ -23,7 +23,7 @@ local lt = love.timer
 local lm = love.mouse
 local le = love.event
 local li = love.image
-
+local lk = love.keyboard
 -------------------------------
 -- Resources ------------------
 -------------------------------
@@ -120,7 +120,13 @@ function love.keypressed(key, scancode, isrepeat)
     elseif scancode == "d" then
        player:setMovement(1, 0)
     end
+end
 
+function love.keyreleased(key, scancode)
+   if lk.isDown("w") or lk.isDown("a") or lk.isDown("d") or lk.isDown("s") then
+      return
+   end
+   player:setMovement(0, 0)
 end
 
 function love.mousepressed(x, y, button, istouch)
