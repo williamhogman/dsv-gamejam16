@@ -34,7 +34,7 @@ function Player:update(dt)
 end
 
 function Player:draw(camera)
-    lg.draw(self.tex, self.loc.x + PLAYER_SIZE / 2, self.loc.y + PLAYER_SIZE / 2, self.r, 1, 1, PLAYER_SIZE/2, PLAYER_SIZE/2)
+    lg.draw(self.tex, self.loc.x + PLAYER_SIZE / 2, self.loc.y + PLAYER_SIZE / 2, self.r - math.pi / 4, 1, 1, PLAYER_SIZE/2, PLAYER_SIZE/2)
 end
 
 return Player
