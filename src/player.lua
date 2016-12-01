@@ -15,6 +15,7 @@ local Player = Class{
         self.dir = Vector.new(0, 1)
         self.r = 0
         self.tex = love.graphics.newImage("resources/player.png")
+        self.collides = true
     end,
 }
 
@@ -27,7 +28,7 @@ function Player:setMovement(vec)
     self.acc = vec * SPEED
 end
 
-function Player:update(dt)
+function Player:update(dt, tilemap, others)
     local new_dir = (self.loc + OFFSET) - getMouseVector()
     local cpd = new_dir:normalized():cross(self.dir)
 
@@ -37,6 +38,11 @@ function Player:update(dt)
 
     self.r = self.dir:angleTo(getMouseVector())
     self.vel = (self.vel + (self.acc * dt)) * clamp(DRAG * dt, 0, 1)
+
+    --if tilemap:collides_with(self.loc) then
+    --self.vel = Vector.new(0, 0)
+    --end
+
     self.loc = self.loc + self.vel
 end
 

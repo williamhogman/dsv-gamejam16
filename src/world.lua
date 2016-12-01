@@ -21,19 +21,34 @@ local World = Class{
     init = function(self, tilemap_data)
         self.tilemap = TileMap(tilemap_data)
         self.player = Player(Vector.new(100, 100))
-        --self.gameobjects = {self.player}
+        self.objects = {self.player}
     end,
 }
 
 function World:draw(camera)
     self.tilemap:draw(camera)
-    self.player:draw(camera)
+    for k, v in ipairs(self.objects) do
+        v:draw(camera)
+    end
 end
 
 function World:update(dt)
     self.tilemap:update(dt)
     self.player:setMovement(calcmovementdirection())
-    self.player:update(dt, tilemap)
+
+    for _k, v in pairs(self.objects) do
+        if v.collides then
+            for _k, other in pairs(self.objects) do
+                if other ~= v and are_colliding(v, other) then
+                    v:did_collide(other)
+                end
+            end
+        end
+    end
+
+    for k, v in pairs(self.objects) do
+        v:update(dt, tilemap)
+    end
 end
 
 --function World:registerObject(obj)
