@@ -27,14 +27,25 @@ function Player:setMovement(x, y)
 end
 
 function Player:update(dt)
+
    local dir = (self.loc + OFFSET) - getMouseVector()
    self.r = dir:angleTo(getMouseVector())
+
    self.vel = (self.vel + (self.acc * dt)):trimmed(MAX_SPEED) * clamp(DRAG * dt, 0, 1)
    self.loc = self.loc + self.vel
+
 end
 
 function Player:draw(camera)
-    lg.draw(self.tex, self.loc.x + PLAYER_SIZE / 2, self.loc.y + PLAYER_SIZE / 2, self.r - math.pi / 4, 1, 1, PLAYER_SIZE/2, PLAYER_SIZE/2)
+    lg.draw(
+        -- tex
+        self.tex,
+        -- draw positions
+        self.loc.x + PLAYER_SIZE / 2, self.loc.y + PLAYER_SIZE / 2,
+        self.r - math.pi / 4, 1, 1,
+        -- origin offsets
+        PLAYER_SIZE/2,
+        PLAYER_SIZE/2)
 end
 
 return Player
