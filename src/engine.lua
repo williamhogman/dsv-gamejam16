@@ -1,12 +1,13 @@
 local Engine = Class{
     init = function(self)
         self.things = {}
+        self.camera = Camera(0, 0, 1)
     end,
 }
 
 function Engine:draw()
     for i,v in ipairs(self.things) do
-        v:draw(camera)
+        v:draw(self.camera)
     end
 end
 
