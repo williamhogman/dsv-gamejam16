@@ -5,59 +5,59 @@ local tilemap = Class {}
 
 function tilemap:init(data, resources)
 
-	-- only tileset we care about
-	local tileset = data.tilesets[1]
+    -- only tileset we care about
+    local tileset = data.tilesets[1]
 
-	-- texture thing
-	self.texture = nil
+    -- texture thing
+    self.texture = nil
 
-	-- get image width/height for texture
-	self.texture_width = tileset.imagewidth
-	self.texture_height = tileset.imageheight
+    -- get image width/height for texture
+    self.texture_width = tileset.imagewidth
+    self.texture_height = tileset.imageheight
 
-	-- height/width of individual tiles
-	self.tile_width = tileset.tilewidth
-	self.tile_height = tileset.tileheight
+    -- height/width of individual tiles
+    self.tile_width = tileset.tilewidth
+    self.tile_height = tileset.tileheight
 
-	-- pixel margins between inviduual tiles to prevent glitches
-	self.margin = tileset.margin
+    -- pixel margins between inviduual tiles to prevent glitches
+    self.margin = tileset.margin
 
-	-- handle only first layer
-	local layer = data.layers[1]
+    -- handle only first layer
+    local layer = data.layers[1]
 
-	-- width/height in tiles of the actual map
-	self.width = layer.width
-	self.height = layer.height
+    -- width/height in tiles of the actual map
+    self.width = layer.width
+    self.height = layer.height
 
-	-- tile data, flat table of ids
-	self.tiles = data
+    -- tile data, flat table of ids
+    self.tiles = data
 
-	-- tile resources
-	self.resources = resources
+    -- tile resources
+    self.resources = resources
 
-	-- tile quads
-	self.quads = self:loadTileData(tileset.tilecount)
+    -- tile quads
+    self.quads = self:loadTileData(tileset.tilecount)
 
 end
 
 function tilemap:loadTileData(resourceCount)
 
-	local quads = {}
+    local quads = {}
+    local x, y = 0, 0
 
-	local x, y = 0, 0
-	for i=1, resourceCount do
+    for i=1, resourceCount do
 
-		x = x + self.margin
-		y = y + self.margin
+        x = x + self.margin
+        y = y + self.margin
 
-		quads[#quads+1] = lg.newQuad(x, y, self.tile_width, self.tile_height, self.texture_width, self.texture_height)
+        quads[#quads+1] = lg.newQuad(x, y, self.tile_width, self.tile_height, self.texture_width, self.texture_height)
 
-		x = x + self.tile_width
-		y = y + self.tile_height
+        x = x + self.tile_width
+        y = y + self.tile_height
 
-	end
+    end
 
-	return quads
+    return quads
 
 end
 
@@ -67,19 +67,19 @@ end
 
 function tilemap:draw()
 
-	local tile_map = self
-	local tile_resources = self.resources
+    local tile_map = self
+    local tile_resources = self.resources
 
-	for i=1, #self.tiles do
+    for i=1, #self.tiles do
 
-		-- this is not even
-		local x = (i % tile_map.width) * tile_map.tile_width
-		local y = (i / tile_map.height) * tile_map.tile_height
+        -- this is not even
+        local x = (i % tile_map.width) * tile_map.tile_width
+        local y = (i / tile_map.height) * tile_map.tile_height
 
-		local tile = self.tiles[i]
-		lg.draw(self.texture, self.quads[tile], self.texture:getDimensions())
+        local tile = self.tiles[i]
+        lg.draw(self.texture, self.quads[tile], self.texture:getDimensions())
 
-	end
+    end
 
 end
 
